@@ -39,7 +39,7 @@ public class PinCounter : MonoBehaviour {
 		int pinsFallen = lastSettledCount - CountStanding ();
 
 		lastSettledCount = CountStanding ();
-
+		Debug.Log ("pinsFallen is " + pinsFallen);
 		gM.Bowl (pinsFallen);
 	}
 		

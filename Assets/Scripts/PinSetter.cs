@@ -9,6 +9,8 @@ public class PinSetter : MonoBehaviour {
 
 	private Animator aN;
 	private PinCounter pc;
+	private float distRaised = 0;
+	private bool raising = false;
 
 	// Use this for initialization
 	void Start () {
@@ -16,17 +18,24 @@ public class PinSetter : MonoBehaviour {
 		aN = GetComponent<Animator> ();
 	}
 
-	// Update is called once per frame
-	void Update () {
-
+	void Update() {
+		if (raising) {
+			RaisePins ();
+		}
 	}
-		
 
 	public void RaisePins() {
-		Debug.Log ("Raised");
+		Debug.Log ("Raising");
+		if (distRaised == 60) {
+			raising = false;
+			distRaised = 0;
+		} else {
+			distRaised++;
+		}
+			
 		foreach (Pin p in GameObject.FindObjectsOfType<Pin> ()) {
 			if (p.isStanding ()) {
-				p.transform.Translate (new Vector3 (0, distanceToRaise, 0));
+				p.transform.Translate (Vector3.up);
 				p.transform.rotation = Quaternion.identity;
 				Rigidbody r = p.GetComponent<Rigidbody>();
 				r.useGravity = false;
@@ -40,7 +49,8 @@ public class PinSetter : MonoBehaviour {
 		foreach (Pin p in GameObject.FindObjectsOfType<Pin> ()) {
 			if (p.isStanding ()) {
 				Rigidbody r = p.GetComponent<Rigidbody>();
-				p.transform.Translate (new Vector3 (0, -distanceToRaise, 0));
+				p.transform.rotation = Quaternion.identity;
+				//p.transform.Translate (new Vector3 (0, 0, 0));
 				r.useGravity = true;
 			}
 		}
@@ -55,6 +65,7 @@ public class PinSetter : MonoBehaviour {
 	public void ActionExcecutor (ActionMaster.Action act) {
 		if (act == ActionMaster.Action.Tidy) {
 			aN.SetTrigger ("TidyTrigger");
+			raising = true;
 		} else if (act == ActionMaster.Action.EndTurn || act == ActionMaster.Action.Reset) {
 			aN.SetTrigger ("ResetTrigger");
 			pc.Reset ();

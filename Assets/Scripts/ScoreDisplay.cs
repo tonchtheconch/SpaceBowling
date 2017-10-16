@@ -9,7 +9,7 @@ public class ScoreDisplay : MonoBehaviour {
 
 	public void FillRolls (List<int> rolls) {
 		string rollDisplay = FormatRolls (rolls);
-		for (int i = 0; i < rolls.Count; i++) {
+		for (int i = 0; i < rollDisplay.Length; i++) {
 			rollTexts [i].text = rollDisplay [i].ToString ();
 		}
 	}
@@ -34,7 +34,9 @@ public class ScoreDisplay : MonoBehaviour {
 				output += "/";
 			} else if (rolls [i] <= 9) {
 				output += rolls [i].ToString ();
-			} 
+			}
+			Debug.Log (rolls [i]);
+			Debug.Log (output);
 		}
 		return output;
 	}
